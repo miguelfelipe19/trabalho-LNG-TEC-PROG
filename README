@@ -1,0 +1,78 @@
+# 🚢 Batalha Naval em C (Terminal)
+
+## 📌 Descrição
+
+Este projeto é uma implementação simplificada do clássico jogo **Batalha Naval**, desenvolvido em linguagem C para execução no terminal.
+
+O jogador deve tentar localizar e destruir todos os navios escondidos em um tabuleiro, informando coordenadas (linha e coluna). A cada tentativa, o sistema informa se o jogador acertou ou errou.
+
+---
+
+## 🎯 Objetivo
+
+Aplicar conceitos fundamentais de programação em C, como:
+
+* Estruturas condicionais (`if/else`)
+* Laços de repetição (`while`, `for`)
+* Matrizes bidimensionais
+* Entrada e saída de dados (`scanf` / `printf`)
+* Lógica de jogo
+
+---
+
+## 🕹️ Como funciona
+
+* O jogo possui um tabuleiro (ex: 5x5 ou 10x10)
+* Os navios são posicionados automaticamente
+* O jogador informa coordenadas para atacar
+* O sistema responde:
+
+  * 💥 Acertou um navio
+  * 🌊 Água (errou)
+* O jogo termina quando:
+
+  * Todos os navios são destruídos, ou
+  * O número máximo de tentativas é atingido
+
+---
+
+## 🧱 Estrutura do Projeto
+
+```
+batalha-naval/
+│
+├── main.c
+├── README.md
+```
+
+---
+
+## ⚙️ Como compilar e executar
+
+### 🔹 Compilar:
+
+```bash
+gcc main.c -o batalha
+```
+
+### 🔹 Executar:
+
+```bash
+./batalha
+```
+
+---
+
+## 💡 Possíveis melhorias
+
+* Modo multiplayer (2 jogadores)
+* Interface mais organizada no terminal
+* Diferentes tamanhos de navios
+* Sistema de pontuação
+* Dificuldade (fácil, médio, difícil)
+
+---
+
+## 👨‍💻 Autor
+
+Projeto desenvolvido para fins acadêmicos, com foco em aprendizado da linguagem C.
