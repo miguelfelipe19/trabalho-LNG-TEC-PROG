@@ -1,7 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "jogo.h"
+#include "<jogo.h>"
+
+#define TAMANHO_TABULEIRO 8    /* tabuleiro 8x8*/
+#define QUANTIDADE_NAVIOS 3
+#define MAX_TENTATIVAS 30
+ /* guarda as infos de UM navio */
+typedef struct {
+    int tamanho;    /* quantas casas o navio ocupa */
+    int acertos;    /* quantas dessas casas ja foram atingidas */
+    int afundado;   /* 0 = ainda flutuando, 1 = afundado */
+} Navio;
+
+typedef struct {
+    char tabuleiro [TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
+    char tiros [TAMANHO_TABULEIRO] [TAMANHO_TABULEIRO];
+    int navioNaCasa [TAMANHO_TABULEIRO] [TAMANHO_TABULEIRO];
+    Navio navios [QUANTIDADE_NAVIOS];
+    int tentativas;
+    int acertos;
+    
+}Jogo;
+
+
+
+
+
+
+
+
+
+
 
 void inicializarJogo(Jogo *jogo) {
     int linha;
@@ -215,4 +245,16 @@ void mostrarHistorico(void) {
         printf("O historico esta vazio.\n");
     }
     fclose(arquivo);
+}
+int main (void) {
+    char entrada[80];
+    int opcao;
+    do {
+        
+        
+        
+        
+        
+        
+    }
 }
