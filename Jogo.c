@@ -246,15 +246,29 @@ void mostrarHistorico(void) {
     }
     fclose(arquivo);
 }
-int main (void) {
+int main(void) {
     char entrada[80];
     int opcao;
+
     do {
-        
-        
-        
-        
-        
-        
-    }
+        printf("\n=== BATALHA NAVAL ===\n");
+        printf("1 - Jogar\n2 - Ver historico\n0 - Sair\nEscolha: ");
+
+        if (fgets(entrada, sizeof(entrada), stdin) == NULL) {
+            break;
+        }
+        if (sscanf(entrada, "%d", &opcao) != 1) {
+            opcao = -1;
+        }
+
+        switch (opcao) {
+            case 1: jogar(); break;
+            case 2: mostrarHistorico(); break;
+            case 0: printf("Ate a proxima!\n"); break;
+            default: printf("Opcao invalida.\n");
+        }
+    } while (opcao != 0);
+
+    return 0;
 }
+
