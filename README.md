@@ -45,6 +45,7 @@ batalha-naval/
 │
 ├── jogo.c
 ├── README.md
+└── historico.txt   (gerado ao jogar)
 ```
 
 ---
@@ -54,13 +55,13 @@ batalha-naval/
 ### 🔹 Compilar:
 
 ```bash
-gcc jogo.c -o batalha
+gcc Jogo.c -o batalha
 ```
 
 ### 🔹 Executar:
 
 ```bash
-./batalha
+./batalha(ou batalha.exe)
 ```
 
 ---
