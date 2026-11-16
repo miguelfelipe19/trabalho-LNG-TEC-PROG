@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "<jogo.h>"
 
 #define TAMANHO_TABULEIRO 8    /* tabuleiro 8x8*/
 #define QUANTIDADE_NAVIOS 3
