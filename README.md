@@ -22,7 +22,7 @@ Aplicar conceitos fundamentais de programação em C, como:
 
 ## 🕹️ Como funciona
 
-* O jogo possui um tabuleiro (ex: 5x5 ou 10x10)
+* O jogo possui um tabuleiro (ex: 8x8)
 * Os navios são posicionados automaticamente
 * O jogador informa coordenadas para atacar
 * O sistema responde:
