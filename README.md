@@ -41,7 +41,7 @@ Aplicar conceitos fundamentais de programação em C, como:
 ```
 batalha-naval/
 │
-├── main.c
+├── jogo.c
 ├── README.md
 ```
 
@@ -52,7 +52,7 @@ batalha-naval/
 ### 🔹 Compilar:
 
 ```bash
-gcc main.c -o batalha
+gcc jogo.c -o batalha
 ```
 
 ### 🔹 Executar:
