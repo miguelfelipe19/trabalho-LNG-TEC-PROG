@@ -23,7 +23,9 @@ Aplicar conceitos fundamentais de programação em C, como:
 ## 🕹️ Como funciona
 
 * O jogo possui um tabuleiro (ex: 8x8)
+* São 3 navios, de tamanhos 3, 2 e 2 (7 casas ao todo)
 * Os navios são posicionados automaticamente
+* O jogador tem no máximo 30 tentativas.
 * O jogador informa coordenadas para atacar
 * O sistema responde:
 
