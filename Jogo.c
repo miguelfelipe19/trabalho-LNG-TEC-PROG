@@ -6,11 +6,11 @@
 #define QUANTIDADE_NAVIOS 3
 #define MAX_TENTATIVAS 30
 
-// guarda as infos de UM navio 
+/* guarda as infos de UM navio */
 typedef struct {
-    int tamanho;    // quantas casas o navio ocupa 
-    int acertos;    // quantas dessas casas ja foram atingidas 
-    int afundado;   // 0 = ainda flutuando, 1 = afundado 
+    int tamanho;    /* quantas casas o navio ocupa */
+    int acertos;    /* quantas dessas casas ja foram atingidas */
+    int afundado;   /* 0 = ainda flutuando, 1 = afundado */
 } Navio;
 
 typedef struct {
@@ -124,7 +124,7 @@ void mostrarTabuleiro(Jogo *jogo) {
         for (coluna = 0; coluna < TAMANHO_TABULEIRO; coluna++) {
             casa = jogo->tiros[linha][coluna];
             if (casa == ' ') {
-                casa = '~';   // casa ainda nao atacada //
+                casa = '~';   /* casa ainda nao atacada */
             }
             printf("%c ", casa);
         }
@@ -274,9 +274,9 @@ int main(void) {
     char entrada[80];
     int opcao;
 
+    mostrarApresentacao();
+
     do {
-        mostrarApresentacao();
-        
         printf("\n==============================\n");
         printf("       BATALHA NAVAL\n");
         printf("==============================\n");
