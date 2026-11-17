@@ -7,13 +7,14 @@
  *     (tamanhos 3, 2 e 2 = 7 casas de navio no total).
  *   - O jogador digita coordenadas (ex.: A 3) para atirar.
  *   - Ele tem no maximo 30 tentativas para afundar todos os navios.
+ *   - Se acabarem as tentativas, aparece uma tela de derrota.
  *   - No fim, o resultado da partida e salvo em "historico.txt",
  *     que pode ser consultado pelo menu.
  */
 
 /* ---------- BIBLIOTECAS ---------- */
 #include <stdio.h>    /* printf, fgets, sscanf, fopen, fprintf, fclose... */
-#include <stdlib.h>   /* rand() e srand() para sortear posicoes */
+#include <stdlib.h>   /* rand() e srand() para sortear posicoes; system() para limpar a tela */
 #include <time.h>     /* time() para criar a "semente" do sorteio */
 
 /* ---------- CONSTANTES ----------
@@ -26,11 +27,11 @@
 
 /* ---------- ESTRUTURAS DE DADOS ---------- */
 
-// guarda as infos de UM navio 
+/* guarda as infos de UM navio */
 typedef struct {
-    int tamanho;    // quantas casas o navio ocupa 
-    int acertos;    // quantas dessas casas ja foram atingidas 
-    int afundado;   // 0 = ainda flutuando, 1 = afundado 
+    int tamanho;    /* quantas casas o navio ocupa */
+    int acertos;    /* quantas dessas casas ja foram atingidas */
+    int afundado;   /* 0 = ainda flutuando, 1 = afundado */
 } Navio;
 
 /* Guarda TUDO que pertence a uma partida. Agrupar tudo em uma struct
@@ -197,7 +198,7 @@ void mostrarTabuleiro(Jogo *jogo) {
         for (coluna = 0; coluna < TAMANHO_TABULEIRO; coluna++) {
             casa = jogo->tiros[linha][coluna];
             if (casa == ' ') {
-                casa = '~';   // casa ainda nao atacada //
+                casa = '~';   /* casa ainda nao atacada */
             }
             printf("%c ", casa);
         }
@@ -258,10 +259,58 @@ int todosNaviosAfundados(Jogo *jogo) {
 }
 
 /* ============================================================
+ *  limparTerminal
+ *  Limpa a tela do terminal. Cada sistema tem um comando diferente:
+ *  "cls" no Windows e "clear" no Linux/macOS. O #ifdef escolhe qual
+ *  usar na hora de compilar (_WIN32 so existe no Windows).
+ * ============================================================ */
+void limparTerminal(void) {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+/* ============================================================
+ *  mostrarTelaDerrota
+ *  Tela exibida quando acabam todas as tentativas: mostra um navio
+ *  afundando, quantos acertos o jogador fez e espera o ENTER para
+ *  voltar ao menu.
+ * ============================================================ */
+void mostrarTelaDerrota(Jogo *jogo) {
+    char entrada[80];   /* so para "engolir" o ENTER digitado */
+
+    limparTerminal();   /* apaga a tela do jogo antes de mostrar a derrota */
+    printf("\n");
+    printf("  ==========================================\n");
+    printf("  ||                                      ||\n");
+    printf("  ||            VOCE PERDEU!              ||\n");
+    printf("  ||                                      ||\n");
+    printf("  ==========================================\n");
+    printf("\n");
+    printf("                      |\n");
+    printf("                      |   \\\n");
+    printf("                  ____|____\\__\n");
+    printf("                  \\__________/\n");
+    printf("      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    printf("        ~~~~~~~  GLUB  GLUB  ~~~~~~~~\n");
+    printf("            ~~~~~~~~~~~~~~~~~~~~\n");
+    printf("\n");
+    printf("   Suas %d tentativas acabaram.\n", MAX_TENTATIVAS);
+    printf("   Voce acertou %d de 7 pedacos de navio.\n", jogo->acertos);
+    printf("   A frota inimiga escapou, capitao...\n");
+    printf("\n   Pressione ENTER para voltar ao menu...");
+
+    fgets(entrada, sizeof(entrada), stdin);   /* pausa ate o ENTER */
+    limparTerminal();                         /* limpa a tela para mostrar o menu */
+}
+
+/* ============================================================
  *  jogar
  *  Controla UMA partida inteira: prepara o jogo, repete o ciclo
  *  "mostrar tabuleiro -> ler tiro -> validar -> atacar" e, no fim,
- *  mostra o resultado e grava no arquivo de historico.
+ *  grava no arquivo de historico e mostra o resultado.
  * ============================================================ */
 void jogar(void) {
     Jogo jogo;              /* a partida (variavel local: some ao fim da funcao) */
@@ -341,28 +390,32 @@ void jogar(void) {
 
     /* ---------- FIM DA PARTIDA ---------- */
     venceu = todosNaviosAfundados(&jogo);
-    mostrarTabuleiro(&jogo);   /* mostra o tabuleiro final */
-    printf("\n==============================================\n");
-    if (venceu) {
-        printf("  PARABENS! Voce venceu em %d tentativas!\n", jogo.tentativas);
-    } else {
-        printf("  FIM DE JOGO! Acabaram as tentativas.\n");
-        printf("  Os navios restantes foram perdidos.\n");
-    }
-    printf("==============================================\n");
 
-    /* Grava o resultado no historico.
+    /* Grava o resultado no historico ANTES de mostrar a tela final
+     * (assim ele e salvo tanto na vitoria quanto na derrota).
      * Modo "a" (append) = acrescenta no final sem apagar o que ja existe;
      * cria o arquivo se ele ainda nao existir. */
     arquivo = fopen("historico.txt", "a");
-    if (arquivo == NULL) {
-        printf("Aviso: nao foi possivel abrir o arquivo historico.txt.\n");
-    } else {
+    if (arquivo != NULL) {
         /* O operador ternario (venceu ? "vitoria" : "fim de jogo") escolhe
          * o texto conforme o valor de venceu. */
         fprintf(arquivo, "Resultado: %s | Tentativas: %d | Acertos: %d\n",
                 venceu ? "vitoria" : "fim de jogo", jogo.tentativas, jogo.acertos);
         fclose(arquivo);   /* sempre fechar o arquivo para garantir a gravacao */
+    }
+
+    if (venceu) {
+        /* VITORIA: mostra o tabuleiro final e a mensagem de parabens */
+        mostrarTabuleiro(&jogo);
+        printf("\n==============================================\n");
+        printf("  PARABENS! Voce venceu em %d tentativas!\n", jogo.tentativas);
+        printf("==============================================\n");
+        if (arquivo == NULL) {
+            printf("Aviso: nao foi possivel abrir o arquivo historico.txt.\n");
+        }
+    } else {
+        /* DERROTA: mostra a tela de derrota, limpa o terminal e volta ao menu */
+        mostrarTelaDerrota(&jogo);
     }
 }
 
@@ -400,23 +453,16 @@ void mostrarHistorico(void) {
 
 /* ============================================================
  *  main
- *  Ponto de entrada: mostra o menu em loop ate o usuario escolher
- *  sair (opcao 0).
+ *  Ponto de entrada: mostra a tela de abertura uma vez e depois
+ *  o menu em loop ate o usuario escolher sair (opcao 0).
  * ============================================================ */
 int main(void) {
     char entrada[80];   /* texto digitado no menu */
     int opcao;          /* opcao escolhida */
 
-    mostrarApresentacao();
-
-    /* OBSERVACAO: a apresentacao esta sendo chamada aqui fora do loop
-     * e tambem DENTRO do loop abaixo, entao ela aparece duas vezes na
-     * primeira execucao (e de novo a cada volta ao menu). Provavelmente
-     * so uma das duas chamadas e necessaria. */
+    mostrarApresentacao();   /* tela de abertura (so uma vez, fora do loop) */
 
     do {
-        mostrarApresentacao();
-        
         /* Desenha o menu */
         printf("\n==============================\n");
         printf("       BATALHA NAVAL\n");
