@@ -168,6 +168,44 @@ int todosNaviosAfundados(Jogo *jogo) {
     return 1;
 }
 
+/* limpa o terminal (funciona no Windows e em Linux/macOS) */
+void limparTerminal(void) {
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
+}
+
+/* tela exibida quando acabam todas as tentativas */
+void mostrarTelaDerrota(Jogo *jogo) {
+    char entrada[80];
+
+    limparTerminal();
+    printf("\n");
+    printf("  ==========================================\n");
+    printf("  ||                                      ||\n");
+    printf("  ||            VOCE PERDEU!              ||\n");
+    printf("  ||                                      ||\n");
+    printf("  ==========================================\n");
+    printf("\n");
+    printf("                      |\n");
+    printf("                      |   \\\n");
+    printf("                  ____|____\\__\n");
+    printf("                  \\__________/\n");
+    printf("      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    printf("        ~~~~~~~  GLUB  GLUB  ~~~~~~~~\n");
+    printf("            ~~~~~~~~~~~~~~~~~~~~\n");
+    printf("\n");
+    printf("   Suas %d tentativas acabaram.\n", MAX_TENTATIVAS);
+    printf("   Voce acertou %d de 7 pedacos de navio.\n", jogo->acertos);
+    printf("   A frota inimiga escapou, capitao...\n");
+    printf("\n   Pressione ENTER para voltar ao menu...");
+
+    fgets(entrada, sizeof(entrada), stdin);
+    limparTerminal();
+}
+
 void jogar(void) {
     Jogo jogo;
     char entrada[80];
@@ -225,23 +263,26 @@ void jogar(void) {
     }
 
     venceu = todosNaviosAfundados(&jogo);
-    mostrarTabuleiro(&jogo);
-    printf("\n==============================================\n");
-    if (venceu) {
-        printf("  PARABENS! Voce venceu em %d tentativas!\n", jogo.tentativas);
-    } else {
-        printf("  FIM DE JOGO! Acabaram as tentativas.\n");
-        printf("  Os navios restantes foram perdidos.\n");
-    }
-    printf("==============================================\n");
 
+    /* salva o resultado no historico antes de mostrar a tela final */
     arquivo = fopen("historico.txt", "a");
-    if (arquivo == NULL) {
-        printf("Aviso: nao foi possivel abrir o arquivo historico.txt.\n");
-    } else {
+    if (arquivo != NULL) {
         fprintf(arquivo, "Resultado: %s | Tentativas: %d | Acertos: %d\n",
                 venceu ? "vitoria" : "fim de jogo", jogo.tentativas, jogo.acertos);
         fclose(arquivo);
+    }
+
+    if (venceu) {
+        mostrarTabuleiro(&jogo);
+        printf("\n==============================================\n");
+        printf("  PARABENS! Voce venceu em %d tentativas!\n", jogo.tentativas);
+        printf("==============================================\n");
+        if (arquivo == NULL) {
+            printf("Aviso: nao foi possivel abrir o arquivo historico.txt.\n");
+        }
+    } else {
+        /* derrota: mostra a tela de derrota, limpa o terminal e volta ao menu */
+        mostrarTelaDerrota(&jogo);
     }
 }
 
