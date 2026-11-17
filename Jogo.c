@@ -5,7 +5,8 @@
 #define TAMANHO_TABULEIRO 8    /* tabuleiro 8x8*/
 #define QUANTIDADE_NAVIOS 3
 #define MAX_TENTATIVAS 30
- /* guarda as infos de UM navio */
+
+/* guarda as infos de UM navio */
 typedef struct {
     int tamanho;    /* quantas casas o navio ocupa */
     int acertos;    /* quantas dessas casas ja foram atingidas */
@@ -19,18 +20,7 @@ typedef struct {
     Navio navios [QUANTIDADE_NAVIOS];
     int tentativas;
     int acertos;
-    
-}Jogo;
-
-
-
-
-
-
-
-
-
-
+} Jogo;
 
 void inicializarJogo(Jogo *jogo) {
     int linha;
@@ -103,20 +93,45 @@ void posicionarNavios(Jogo *jogo) {
     }
 }
 
+void mostrarApresentacao(void) {
+    printf("\n");
+    printf("  ==========================================\n");
+    printf("  ||                                      ||\n");
+    printf("  ||          BATALHA   NAVAL             ||\n");
+    printf("  ||                                      ||\n");
+    printf("  ==========================================\n");
+    printf("\n");
+    printf("                   |\\\n");
+    printf("                   | \\\n");
+    printf("              _____|__\\_____\n");
+    printf("              \\___________/\n");
+    printf("      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    printf("\n");
+    printf("   Projeto de Linguagem e Tecnicas de Programacao\n");
+    printf("\n   Pressione ENTER para comecar...");
+    getchar();
+}
+
 void mostrarTabuleiro(Jogo *jogo) {
     int linha;
     int coluna;
+    char casa;
 
-    printf("\n     1 2 3 4 5 6 7 8\n");
-    printf("    -----------------\n");
+    printf("\n       1 2 3 4 5 6 7 8\n");
+    printf("     -------------------\n");
     for (linha = 0; linha < TAMANHO_TABULEIRO; linha++) {
-        printf(" %c | ", 'A' + linha);
+        printf("   %c | ", 'A' + linha);
         for (coluna = 0; coluna < TAMANHO_TABULEIRO; coluna++) {
-            printf("%c ", jogo->tiros[linha][coluna]);
+            casa = jogo->tiros[linha][coluna];
+            if (casa == ' ') {
+                casa = '~';   /* casa ainda nao atacada */
+            }
+            printf("%c ", casa);
         }
-        printf("\n");
+        printf("|\n");
     }
-    printf("\nLegenda: ~ nao tentado, O agua, X navio atingido\n");
+    printf("     -------------------\n");
+    printf("\n Legenda: ~ nao tentado | O agua | X navio atingido\n");
 }
 
 int realizarAtaque(Jogo *jogo, int linha, int coluna) {
@@ -131,14 +146,15 @@ int realizarAtaque(Jogo *jogo, int linha, int coluna) {
         jogo->navios[indice].acertos++;
         if (jogo->navios[indice].acertos == jogo->navios[indice].tamanho) {
             jogo->navios[indice].afundado = 1;
-            printf("Voce afundou um navio!\n");
+            printf("\n >>> BOOM! Voce afundou um navio! <<<\n");
+        } else {
+            printf("\n >>> Acertou um navio! <<<\n");
         }
-        printf("Acertou um navio!\n");
         return 1;
     }
 
     jogo->tiros[linha][coluna] = 'O';
-    printf("Agua!\n");
+    printf("\n >>> Agua! <<<\n");
     return 0;
 }
 
@@ -168,10 +184,13 @@ void jogar(void) {
     posicionarNavios(&jogo);
     venceu = 0;
 
-    printf("\nBATALHA NAVAL\nEncontre os 7 pedacos de navio em ate %d tentativas.\n", MAX_TENTATIVAS);
+    printf("\n==============================================\n");
+    printf("  BATALHA NAVAL\n");
+    printf("  Encontre os 7 pedacos de navio em ate %d tentativas.\n", MAX_TENTATIVAS);
+    printf("==============================================\n");
     while (jogo.tentativas < MAX_TENTATIVAS && !todosNaviosAfundados(&jogo)) {
         mostrarTabuleiro(&jogo);
-        printf("Tentativa %d de %d. Digite linha e coluna (ex.: A 3): ",
+        printf("\n Tentativa %d de %d. Digite linha e coluna (ex.: A 3): ",
                jogo.tentativas + 1, MAX_TENTATIVAS);
 
         if (fgets(entrada, sizeof(entrada), stdin) == NULL) {
@@ -180,7 +199,7 @@ void jogar(void) {
         }
         lidos = sscanf(entrada, " %c %d", &linhaLetra, &coluna);
         if (lidos != 2) {
-            printf("Entrada invalida. Use uma letra de A a H e um numero de 1 a 8.\n");
+            printf("\n Entrada invalida. Use uma letra de A a H e um numero de 1 a 8.\n");
             continue;
         }
 
@@ -191,27 +210,30 @@ void jogar(void) {
         coluna--;
         if (linha < 0 || linha >= TAMANHO_TABULEIRO ||
             coluna < 0 || coluna >= TAMANHO_TABULEIRO) {
-            printf("Coordenada fora do tabuleiro. Tente novamente.\n");
+            printf("\n Coordenada fora do tabuleiro. Tente novamente.\n");
             continue;
         }
         if (jogo.tiros[linha][coluna] != ' ') {
-            printf("Voce ja tentou essa casa. Escolha outra.\n");
+            printf("\n Voce ja tentou essa casa. Escolha outra.\n");
             continue;
         }
 
         resultado = realizarAtaque(&jogo, linha, coluna);
         if (resultado) {
-            printf("Total de acertos: %d\n", jogo.acertos);
+            printf(" Total de acertos: %d de 7\n", jogo.acertos);
         }
     }
 
     venceu = todosNaviosAfundados(&jogo);
     mostrarTabuleiro(&jogo);
+    printf("\n==============================================\n");
     if (venceu) {
-        printf("Parabens! Voce venceu em %d tentativas.\n", jogo.tentativas);
+        printf("  PARABENS! Voce venceu em %d tentativas!\n", jogo.tentativas);
     } else {
-        printf("Fim das tentativas. Os navios restantes foram perdidos.\n");
+        printf("  FIM DE JOGO! Acabaram as tentativas.\n");
+        printf("  Os navios restantes foram perdidos.\n");
     }
+    printf("==============================================\n");
 
     arquivo = fopen("historico.txt", "a");
     if (arquivo == NULL) {
@@ -230,28 +252,39 @@ void mostrarHistorico(void) {
 
     arquivo = fopen("historico.txt", "r");
     if (arquivo == NULL) {
-        printf("Ainda nao ha partidas salvas.\n");
+        printf("\n Ainda nao ha partidas salvas.\n");
         return;
     }
 
     encontrou = 0;
-    printf("\nHISTORICO DE PARTIDAS\n");
+    printf("\n==============================================\n");
+    printf("  HISTORICO DE PARTIDAS\n");
+    printf("==============================================\n");
     while (fgets(linha, sizeof(linha), arquivo) != NULL) {
-        printf("%s", linha);
+        printf(" %s", linha);
         encontrou = 1;
     }
     if (!encontrou) {
-        printf("O historico esta vazio.\n");
+        printf(" O historico esta vazio.\n");
     }
     fclose(arquivo);
 }
+
 int main(void) {
     char entrada[80];
     int opcao;
 
+    mostrarApresentacao();
+
     do {
-        printf("\n=== BATALHA NAVAL ===\n");
-        printf("1 - Jogar\n2 - Ver historico\n0 - Sair\nEscolha: ");
+        printf("\n==============================\n");
+        printf("       BATALHA NAVAL\n");
+        printf("==============================\n");
+        printf("  1 - Jogar\n");
+        printf("  2 - Ver historico\n");
+        printf("  0 - Sair\n");
+        printf("==============================\n");
+        printf("Escolha: ");
 
         if (fgets(entrada, sizeof(entrada), stdin) == NULL) {
             break;
@@ -263,11 +296,10 @@ int main(void) {
         switch (opcao) {
             case 1: jogar(); break;
             case 2: mostrarHistorico(); break;
-            case 0: printf("Ate a proxima!\n"); break;
-            default: printf("Opcao invalida.\n");
+            case 0: printf("\nAte a proxima, capitao!\n"); break;
+            default: printf("\nOpcao invalida.\n");
         }
     } while (opcao != 0);
 
     return 0;
 }
-
