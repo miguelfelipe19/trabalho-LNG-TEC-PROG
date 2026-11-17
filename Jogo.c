@@ -274,8 +274,6 @@ int main(void) {
     char entrada[80];
     int opcao;
 
-    mostrarApresentacao();
-
     do {
         mostrarApresentacao();
         
