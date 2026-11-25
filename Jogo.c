@@ -365,9 +365,10 @@ int main(void) {
     do {
         printf("\n==============================\n");
         printf("       BATALHA NAVAL\n");
-        printf("==============================\n");
-        printf("  1 - Jogar\n");
-        printf("  2 - Ver historico\n");
+        printf("------------------------------\n");
+        printf("Digite:                       \n");
+        printf("  1 - Começar jogo \n");
+        printf("  2 - Ver historico de partidas\n");
         printf("  0 - Sair\n");
         printf("==============================\n");
         printf("Escolha: ");
