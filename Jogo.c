@@ -6,7 +6,7 @@
 /* ===== PARTE 2: VALORES FIXOS ===== */
 #define TAMANHO_TABULEIRO 8    /* tabuleiro 8x8*/
 #define QUANTIDADE_NAVIOS 3    /* numero de navios */
-#define MAX_TENTATIVAS 20      /* maximo de tiros */
+#define MAX_TENTATIVAS 30      /* maximo de tiros */
 
 /* ===== PARTE 3: STRUCTS (guardam varias informacoes juntas) ===== */
 
