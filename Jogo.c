@@ -111,21 +111,21 @@ void posicionarNavios(Jogo *jogo) {
 /* ===== PARTE 6: TELA INICIAL ===== */
 void mostrarApresentacao(void) {
     printf("\n");
-    printf("  ==========================================\n");
-    printf("  ||                                      ||\n");
-    printf("  ||          BATALHA   NAVAL             ||\n");
-    printf("  ||                                      ||\n");
-    printf("  ==========================================\n");
+    printf("   ==========================================\n");
+    printf("   ||                                      ||\n");
+    printf("   ||          BATALHA   NAVAL             ||\n");
+    printf("   ||                                      ||\n");
+    printf("   ==========================================\n");
     printf("\n");         
-    printf("\t\t        |    |    |\n");
-    printf("\t\t        )_)  )_)  )_)\n");
-    printf("\t\t       )___))___))___)\ \n");
-    printf("\t\t      )____)____)_____)\\ \n");
-    printf("\t\t     _____|____|____|____\\\__ \n");
-    printf("\t\t-----\                   /----- \n");
-    printf("\t\t  ^^^^^ ^^^^^^^^^^^^^^^^^^^^^ \n");
-    printf("\t\t    ^^^^      ^^^^     ^^^    ^^ \n"); 
-    printf("\t\t         ^^^^      ^^^           \n");
+    printf("\t        |    |    |\n");
+    printf("\t        )_)  )_)  )_)\n");
+    printf("\t       )___))___))___)\ \n");
+    printf("\t      )____)____)_____)\\ \n");
+    printf("\t     _____|____|____|____\\\__ \n");
+    printf("\t-----\                   /----- \n");
+    printf("\t  ^^^^^ ^^^^^^^^^^^^^^^^^^^^^ \n");
+    printf("\t    ^^^^      ^^^^     ^^^    ^^ \n"); 
+    printf("\t         ^^^^      ^^^           \n");
     printf("\n");
     printf("   Projeto de Linguagem e Tecnicas de Programacao\n");
     printf("\n   Pressione ENTER para comecar...");
@@ -371,7 +371,7 @@ int main(void) {
         printf("  2 - Ver historico de partidas\n");
         printf("  0 - Sair\n");
         printf("==============================\n");
-        printf("Escolha: ");
+        printf("ESCOLHA( 1 | 2 | 0 ): ");
 
         /* le a opcao */
         if (fgets(entrada, sizeof(entrada), stdin) == NULL) {
