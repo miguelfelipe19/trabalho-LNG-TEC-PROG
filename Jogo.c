@@ -117,7 +117,7 @@ void mostrarApresentacao(void) {
     printf("   ||                                      ||\n");
     printf("   ==========================================\n");
     printf("\n");         
-    printf("\t        |    |    |\n");
+    printf("\t         |    |    |\n");
     printf("\t        )_)  )_)  )_)\n");
     printf("\t       )___))___))___)\ \n");
     printf("\t      )____)____)_____)\\ \n");
