@@ -367,7 +367,7 @@ int main(void) {
         printf("       BATALHA NAVAL\n");
         printf("------------------------------\n");
         printf("Digite:                       \n");
-        printf("  1 - Começar jogo \n");
+        printf("  1 - Comecar jogo \n");
         printf("  2 - Ver historico de partidas\n");
         printf("  0 - Sair\n");
         printf("==============================\n");
